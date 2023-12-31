@@ -50,6 +50,7 @@ const int N = 1e5 + 5;
 
 void solve()
 {
+	int a=1;
 	int n; cin >> n;
 	string s;
 	cin >> s;
