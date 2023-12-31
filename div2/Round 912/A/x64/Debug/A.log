@@ -1,0 +1,3 @@
+﻿  A.cpp
+D:\Code\codeforce_round\div2\Round 912\A\A.cpp(51,19): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+  A.vcxproj -> D:\Code\codeforce_round\div2\Round 912\A\x64\Debug\A.exe
