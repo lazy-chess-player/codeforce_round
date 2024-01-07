@@ -79,43 +79,38 @@ void rcinv(vi vec, int n) { for (int i = (n); i >= 1; i--)cin >> (vec)[i]; }
 void coutv(vi vec, int n) { for (int i = 1; i <= (n); i++)cout << (vec)[i] << " "; cout << '\n'; }
 void rcoutv(vi vec, int n) { for (int i = (n); i >= 1; i--)cout << (vec)[i] << " "; cout << '\n'; }
 
-
+// 一开始有两个盒子，每个盒子可以装下比自己小的一个盒子，装下比自己小的盒子之后，
+// 容量就会变小，如果两个盒子都装不下，我们就可以花费代价去换一个任意大的盒子，
+// 无论多大，花费的代价都是1。现在有一堆盒子等我们装起来，把所有盒子装下的代价
+// 是多少。我们可以一开始看作拥有两个无限大容量的盒子，在装盒子的过程中，如果待
+// 装的盒子比现有的两个盒子容量都小，那么肯定是用更小的那个盒子去装，如果用更大
+// 的盒子去装，那么浪费的容量就会更大；如果待装的盒子比小盒子大，比大盒子小，那
+// 么肯定装进大盒子里，没必要花费代价去换一个盒子；如果待装的盒子比两个盒子都大，
+// 那肯定是换掉更小的那个盒子，因为换多大的盒子的代价都一样，既然花的钱一样，肯
+// 定是把小的换了留大的。
 void solve()
 {
     ll n; cin >> n;
-    vi nums(n);
-    for (int i = 0; i < n; i++)
+    int minbox=INT32_MAX;
+    int maxbox=INT32_MAX;
+    int now;
+    int cost=0;
+    for(int i=0;i<n;i++)
     {
-        cin >> nums[i];
-    }
-    vi more, less;
-    for (int i = 0; i < n; i++)
-    {
-        if (less.empty())
+        cin>>now;
+        if(minbox>maxbox)// 只需要知道小盒子和大盒子的容量分别是多少就行
+            swap(minbox,maxbox);
+        if(now<=minbox)// 比小盒子更小，装进小盒子里
+            minbox=now;
+        else if(now>maxbox)// 比大盒子更大，花费1代价换掉小盒子
         {
-            less.push_back(nums[i]);
-            continue;
+            cost++;
+            minbox=now;
         }
-        if (nums[i] > less.back())
-            more.push_back(nums[i]);
-        else
-            less.push_back(nums[i]);
-        if (!more.empty() && !more.empty() && less.back() > more.back())
-            swap(more, less);
+        else// 比大盒子小且比小盒子大，装进大盒子
+            maxbox=now;
     }
-    ll cnt1 = 0;
-    ll cnt2 = 0;
-    for (int i = 1; i < less.size(); i++)
-    {
-        if (less[i] > less[i - 1])
-            cnt1++;
-    }
-    for (int i = 1; i < more.size(); i++)
-    {
-        if (more[i] > more[i - 1])
-            cnt2++;
-    }
-    cout << cnt1 + cnt2 << endl;
+    cout<<cost<<endl;
 }
 
 int main()
