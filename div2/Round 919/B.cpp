@@ -74,43 +74,64 @@ typedef unordered_map<string, int> umsi;
 typedef unordered_map<string, ll> umsl;
 
 
-void cinv(vi vec,int n) 
+void cinv(vi& vec, int n)
 {
     for (int i = 1; i <= (n); i++)
         cin >> (vec)[i];
 }
-void rcinv(vi vec, int n)
+void rcinv(vi& vec, int n)
 {
     for (int i = (n); i >= 1; i--)
         cin >> (vec)[i];
 }
-void coutv(vi vec, int n) 
+void coutv(vi& vec, int n)
 {
     for (int i = 1; i <= (n); i++)
         cout << (vec)[i] << " ";
-    cout << '\n'; 
+    cout << '\n';
 }
-void rcoutv(vi vec, int n)
-{ 
+void rcoutv(vi& vec, int n)
+{
     for (int i = (n); i >= 1; i--)
         cout << (vec)[i] << " ";
-    cout << '\n'; 
+    cout << '\n';
 }
 
 
 void solve()
 {
-
+    int n, k, x;
+    cin >> n >> k >> x;
+    vl nums(n + 1);
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> nums[i];
+    }
+    sort(nums.begin() + 1, nums.end(), greater<ll>());
+    vl sums(n+1);
+    for (int i = 0; i <= n; i++)
+    {
+        sums[i] = sums[i - 1] + nums[i];
+    }
+    ll ans = INT64_MIN;
+    for (int i = 0; i <= k; i++)
+    {
+        int el = i + x;
+        if (el > n)
+            el = n;
+        ans = max(ans, sums[n] + sums[i] - 2 * sums[el]);
+    }
+    cout << ans << endl;
 }
 
 int main()
 {
-	ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-	int t = 1;
-	cin >> t;
-	while (t--)
-	{
-		solve();
-	}
-	return 0;
+    ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+    int t = 1;
+    cin >> t;
+    while (t--)
+    {
+        solve();
+    }
+    return 0;
 }
