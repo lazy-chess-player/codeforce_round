@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <set>
 #include <unordered_map>
-#include <cstring>
 #include <string>
+#include <cstring>
 #include <queue>
 #include <stack>
 #include <map>
@@ -101,53 +101,55 @@ void rcoutv(vi vec, int n)
 
 void solve()
 {
-    int n, x;
-    cin >> n >> x;
-    vi a(n);
-    int loc = 0;
-    for (int i = 0; i < n; i++)
+    ll a; cin >> a;
+    string s = to_string(a);
+    if(count(s.begin(), s.end(), '0') + count(s.begin(), s.end(), '1') == s.size())
     {
-        cin >> a[i];
-        if (a[i] == x)
-            loc = i + 1;
+        yes; 
+        return;
     }
-    int l = 0;
-    int r = n;
-    int cnt = 0;
-    vpii ans;
-    if (loc != n) 
+    while (a > 1)
     {
-        cnt++;
-        swap(a[loc - 1], a[n - 1]);
-        ans.push_back({ loc, n });
+        ll cnt = 0;
+        vl vec;
+        for (ll i = 1; i <= sqrt(a); i++)
+        {
+            if (a % i == 0 && i != a / i)
+            {
+                vec.push_back(i);
+                vec.push_back(a / i);
+            }
+            else if (a % i == 0 && i == a / i)
+                vec.push_back(i);
+        }
+        sort(vec.begin(), vec.end()); 
+        vec.erase(vec.begin()); 
+        reverse(vec.begin(), vec.end());
+        for (ll i = 0; i < vec.size(); i++)
+        {
+            string s1 = to_string(vec[i]);
+            if (count(s1.begin(), s1.end(), '0') + count(s1.begin(), s1.end(), '1') == s1.size())
+            {
+                a /= vec[i];
+                cnt = 1;
+                break;
+            }
+        }
+        if (cnt == 0)
+        {
+            no;
+            return;
+        }
     }
-    while ((r - l) > 1)
-    {
-        int m = (r + l) / 2;
-        if (a[m] <= x)
-            l = m;
-        else
-            r = m;
-    }
-    if (l != n - 1)
-    {
-        cnt++;
-        ans.push_back({ l + 1, n });
-    }
-
-    cout << cnt << endl;
-    for (int i = 0; i < cnt; i++) 
-    {
-        cout << ans[i].first << " " << ans[i].second<<endl;
-    }
+    yes;
 }
 
 int main()
 {
     ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    int t = 1;
-    cin >> t;
-    while (t--)
+    int _ = 1;
+    cin >> _;
+    while (_--)
     {
         solve();
     }

@@ -100,9 +100,9 @@ void rcoutv(vi vec, int n)
 
 void solve()
 {
-    int a,b,m;
+    ll a,b,m;
     cin>>a>>b>>m;
-    int temp=2;
+    ll temp=2;
     temp+=m/b;
     temp+=m/a;
     cout<<temp<<endl;

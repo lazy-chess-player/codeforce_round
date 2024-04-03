@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <set>
 #include <unordered_map>
-#include <cstring>
 #include <string>
+#include <cstring>
 #include <queue>
 #include <stack>
 #include <map>
@@ -98,56 +98,49 @@ void rcoutv(vi vec, int n)
     cout << '\n';
 }
 
+int n;
+string s;
+string t;
+bool check(int x)
+{
+    int cnt1 = 0;
+    int cnt2 = 0;
+    for (int i = x; i < n; i++)
+    {
+        if (s[i % x] != s[i])
+            cnt1++;
+        if (t[i % x] != t[i])
+            cnt2++;
+        if (cnt1 > 1 && cnt2 > 1)
+            return false;
+    }
+    return true;
+}
 
 void solve()
 {
-    int n, x;
-    cin >> n >> x;
-    vi a(n);
-    int loc = 0;
-    for (int i = 0; i < n; i++)
+    cin >> n;
+    cin >> s;
+    t = s;
+    reverse(t.begin(), t.end());
+    int ans = n;
+    for (int i = 1; i <= n / 2; i++)
     {
-        cin >> a[i];
-        if (a[i] == x)
-            loc = i + 1;
+        if (n % i == 0 && check(i))
+        {
+            ans = i;
+            break;
+        }
     }
-    int l = 0;
-    int r = n;
-    int cnt = 0;
-    vpii ans;
-    if (loc != n) 
-    {
-        cnt++;
-        swap(a[loc - 1], a[n - 1]);
-        ans.push_back({ loc, n });
-    }
-    while ((r - l) > 1)
-    {
-        int m = (r + l) / 2;
-        if (a[m] <= x)
-            l = m;
-        else
-            r = m;
-    }
-    if (l != n - 1)
-    {
-        cnt++;
-        ans.push_back({ l + 1, n });
-    }
-
-    cout << cnt << endl;
-    for (int i = 0; i < cnt; i++) 
-    {
-        cout << ans[i].first << " " << ans[i].second<<endl;
-    }
+    cout << ans << endl;
 }
 
 int main()
 {
     ios::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    int t = 1;
-    cin >> t;
-    while (t--)
+    int _ = 1;
+    cin >> _;
+    while (_--)
     {
         solve();
     }
