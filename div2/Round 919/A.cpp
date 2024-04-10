@@ -18,9 +18,8 @@
 #define ft first
 #define sd second
 
-#define yes std::cout<<"Yes\n";
-#define no std::cout<<"No\n";
-
+#define yes std::cout << "Yes\n";
+#define no std::cout << "No\n";
 
 using namespace std;
 
@@ -44,12 +43,12 @@ typedef vector<pss> vpss;
 typedef vector<vi> vvi;
 typedef vector<vl> vvl;
 
-typedef queue <int> qi;
-typedef queue <ll> ql;
-typedef queue <pii> qpii;
-typedef queue <pll> qpll;
-typedef queue <psi> qpsi;
-typedef queue <psl> qpsl;
+typedef queue<int> qi;
+typedef queue<ll> ql;
+typedef queue<pii> qpii;
+typedef queue<pll> qpll;
+typedef queue<psi> qpsi;
+typedef queue<psl> qpsl;
 
 typedef priority_queue<int> pqi;
 typedef priority_queue<ll> pql;
@@ -72,7 +71,6 @@ typedef unordered_map<char, int> umci;
 typedef unordered_map<char, ll> umcl;
 typedef unordered_map<string, int> umsi;
 typedef unordered_map<string, ll> umsl;
-
 
 void cinv(vi vec, int n)
 {
@@ -97,24 +95,25 @@ void rcoutv(vi vec, int n)
     cout << '\n';
 }
 
-
 void solve()
 {
-    int n; cin >> n;
+    int n;
+    cin >> n;
     vpii cons(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> cons[i].ft >> cons[i].sd;
+        cin >> cons[i].now >> cons[i].sd;
     }
-    sort(cons.begin(), cons.end());    int cnt = 0;
+    sort(cons.begin(), cons.end());
+    int cnt = 0;
     int mn = INT32_MIN;
     int mx = INT32_MAX;
     map<int, bool> mp;
     for (int i = 0; i < n; i++)
     {
-        if (cons[i].ft == 1)
+        if (cons[i].now == 1)
             mn = max(cons[i].sd, mn);
-        else if (cons[i].ft == 2)
+        else if (cons[i].now == 2)
             mx = min(cons[i].sd, mx);
         else if (cons[i].sd >= mn && cons[i].sd <= mx && !mp[cons[i].sd])
         {

@@ -19,9 +19,8 @@
 #define ft first
 #define sd second
 
-#define yes std::cout<<"Yes\n"
-#define no std::cout<<"No\n"
-
+#define yes std::cout << "Yes\n"
+#define no std::cout << "No\n"
 
 using namespace std;
 
@@ -45,12 +44,12 @@ typedef vector<pss> vpss;
 typedef vector<vi> vvi;
 typedef vector<vl> vvl;
 
-typedef queue <int> qi;
-typedef queue <ll> ql;
-typedef queue <pii> qpii;
-typedef queue <pll> qpll;
-typedef queue <psi> qpsi;
-typedef queue <psl> qpsl;
+typedef queue<int> qi;
+typedef queue<ll> ql;
+typedef queue<pii> qpii;
+typedef queue<pll> qpll;
+typedef queue<psi> qpsi;
+typedef queue<psl> qpsl;
 
 typedef priority_queue<int> pqi;
 typedef priority_queue<ll> pql;
@@ -73,7 +72,6 @@ typedef unordered_map<char, int> umci;
 typedef unordered_map<char, ll> umcl;
 typedef unordered_map<string, int> umsi;
 typedef unordered_map<string, ll> umsl;
-
 
 void cinv(vi vec, int n)
 {
@@ -105,19 +103,19 @@ char board[3][MAXN];
 bool vis[3][MAXN];
 bool flag = false;
 
-pii d[] = { {-1,0},{1,0},{0,-1} ,{0,1} };
+pii d[] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
 void dfs(int y, int x)
 {
     if (flag)
         return;
-    if (y < 1 || y>2 || x<1 || x>n)
+    if (y < 1 || y > 2 || x < 1 || x > n)
         return;
     if (board[y][x] == '>')
         x += 1;
     else if (board[y][x] == '<')
         x -= 1;
-    if (y < 1 || y>2 || x<1 || x>n)
+    if (y < 1 || y > 2 || x < 1 || x > n)
         return;
     if (y == 2, x == n)
     {
@@ -126,10 +124,10 @@ void dfs(int y, int x)
     }
     for (int i = 0; i < 4; i++)
     {
-        if (!vis[y + d[i].ft][x + d[i].sd] && y + d[i].ft >= 1 && y + d[i].ft <= 2 && x + d[i].sd >= 1 && x + d[i].sd <= n)
+        if (!vis[y + d[i].now][x + d[i].sd] && y + d[i].now >= 1 && y + d[i].now <= 2 && x + d[i].sd >= 1 && x + d[i].sd <= n)
         {
-            vis[y + d[i].ft][x + d[i].sd] = true;
-            dfs(y + d[i].ft, x + d[i].sd);
+            vis[y + d[i].now][x + d[i].sd] = true;
+            dfs(y + d[i].now, x + d[i].sd);
         }
     }
     return;
