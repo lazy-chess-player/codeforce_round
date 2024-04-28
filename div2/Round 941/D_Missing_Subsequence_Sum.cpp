@@ -172,50 +172,55 @@ inline void write(T x)
 
 /*#####################################BEGIN#####################################*/
 
-const string t1 = "Alice";
-const string t2 = "Bob";
+const int N = 2e6 + 5;
+bitset<N> vis;
+
+void init()
+{
+    vis.reset();
+    vis[0] = 1;
+}
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vi a(n + 1);
-    for (int i = 1; i <= n; i++)
+    init();
+    int n, k;
+    cin >> n >> k;
+    vi ans;
+    int bit = 1;
+    while (bit * 2 - 1 < k)
     {
-        cin >> a[i];
+        ans.eb(bit);
+        for (int i = n; i >= bit; i--)
+        {
+            vis.set(i, vis[i] || vis[i - bit]);
+        }
+        bit <<= 1;
     }
-    sort(all(a));
-    a.erase(unique(all(a)), a.begin());
-    int m = a.size();
-    int mex = 0;
-    int i = 1;
-    while (i < m && a[i] == a[i - 1] + 1)
+    int t = k - bit;
+    if (t > 0)
     {
-        i++;
-        mex++;
+        ans.eb(t);
+        for (int i = n; i >= t; i--)
+        {
+            vis.set(i, vis[i] || vis[i - t]);
+        }
     }
-    if (i == m)
+    for (bit = k + 1; bit <= n; bit++)
     {
-        if (mex & 1)
-            cout << t1 << endl;
-        else
-            cout << t2 << endl;
-        return;
+        if (!vis[bit])
+        {
+            ans.eb(bit);
+            for (int i = n; i >= bit; i--)
+            {
+                vis.set(i, vis[i] || vis[i - bit]);
+            }
+        }
     }
-    if (mex & 1)
-    {
-        if (a[i] - mex > 1)
-            cout << t2 << endl;
-        else
-            cout << t1 << endl;
-    }
-    else
-    {
-        if (a[i] - mex > 1)
-            cout << t1 << endl;
-        else
-            cout << t2 << endl;
-    }
+    cout << ans.size() << endl;
+    for (auto i : ans)
+        cout << i << " ";
+    cout << endl;
 }
 
 int main()
