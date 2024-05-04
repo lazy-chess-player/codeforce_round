@@ -30,7 +30,6 @@
 #define YES cout << "YES\n"
 #define NO cout << "NO\n"
 
-#define pb push_back
 #define eb emplace_back
 
 #define all(x) x.begin(), x.end()
@@ -172,25 +171,67 @@ inline void write(T x)
 
 /*#####################################BEGIN#####################################*/
 
+const string tB = "Bodya";
+const string tS = "Sasha";
+const string tD = "Draw";
+
+// const int N = 5 + 5;
+const int N = 2e5 + 5;
+ll n, k, pb, ps;
+ll a[N], p[N];
+
+ll ans1;
+ll ans2;
+void init()
+{
+    memset(a, 0, sizeof(a));
+    memset(p, 0, sizeof(p));
+    ans1 = 0;
+    ans2 = 0;
+}
+
+void dfs1(int x, ll t, ll now, int start)
+{
+    if (!t)
+        return;
+    now += a[x];
+    ans1 = max(ans1, now + (t - 1) * a[x]);
+    if (p[x] == start)
+        return;
+    dfs1(p[x], t - 1, now, start);
+}
+
+void dfs2(int x, ll t, ll now, int start)
+{
+    if (t == 0)
+        return;
+    now += a[x];
+    ans2 = max(ans2, now + (t - 1) * a[x]);
+    if (p[x] == start)
+        return;
+    dfs2(p[x], t - 1, now, start);
+}
+
 void solve()
 {
-    int n;
-    string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
+    init();
+    cin >> n >> k >> pb >> ps;
     for (int i = 1; i <= n; i++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
-        else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+        cin >> p[i];
     }
-    cout << mx - mn << endl;
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+    dfs1(pb, k, 0, pb);
+    dfs2(ps, k, 0, ps);
+    if (ans1 > ans2)
+        cout << tB << endl;
+    else if (ans1 < ans2)
+        cout << tS << endl;
+    else
+        cout << tD << endl;
 }
 
 int main()

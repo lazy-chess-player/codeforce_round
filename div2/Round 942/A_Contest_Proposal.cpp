@@ -175,22 +175,33 @@ inline void write(T x)
 void solve()
 {
     int n;
-    string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
-    for (int i = 1; i <= n; i++)
+    cin >> n;
+    vi a(n);
+    vi b(n);
+    for (int i = 0; i < n; i++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
-        else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+        cin >> a[i];
     }
-    cout << mx - mn << endl;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> b[i];
+    }
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        int j = i;
+        for (; j < n; j++)
+        {
+            if (a[i] <= b[i])
+            {
+                ans = max(j - i, ans);
+                break;
+            }
+        }
+        if (j == n)
+            ans = max(j - i + 1, ans);
+    }
+    cout << ans << endl;
 }
 
 int main()

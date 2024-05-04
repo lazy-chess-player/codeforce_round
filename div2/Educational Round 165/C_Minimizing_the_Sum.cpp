@@ -174,23 +174,56 @@ inline void write(T x)
 
 void solve()
 {
-    int n;
-    string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
+    int n, K;
+    cin >> n >> K;
+    vl a(n + 1);
+    vl sum(n + 1);
     for (int i = 1; i <= n; i++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
-        else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+        cin >> a[i];
+        sum[i] = sum[i - 1] + a[i];
     }
-    cout << mx - mn << endl;
+    ll ans = sum[n];
+    priority_queue<pair<double, vi>> pq;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int len = 2; len <= K + 1 && i + len - 1 <= n; len++)
+        {
+            ll mn = INF;
+            vi temp;
+            for (int j = i; j <= i + len - 1; j++)
+            {
+                temp.eb(j);
+                mn = min(mn, a[j]);
+            }
+            pq.push({(double)(sum[i + len - 1] - sum[i - 1] - len * mn) / len, temp});
+        }
+    }
+    vb use(n + 1);
+    while (K && !pq.empty())
+    {
+        auto t = pq.top();
+        bool flag = true;
+        for (auto x : t.sd)
+        {
+            if (use[x])
+            {
+                flag = false;
+                break;
+            }
+        }
+        if (flag && t.sd.size() - 1 <= K)
+        {
+            ans -= (ll)(t.ft * t.sd.size());
+            K -= t.sd.size() - 1;
+            for (auto x : t.sd)
+            {
+                use[x] = true;
+            }
+        }
+        pq.pop();
+    }
+    cout << ans << endl;
 }
 
 int main()

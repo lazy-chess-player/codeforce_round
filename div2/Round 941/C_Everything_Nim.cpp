@@ -185,33 +185,33 @@ void solve()
         cin >> a[i];
     }
     sort(all(a));
-    a.erase(unique(all(a)), a.begin());
-    int m = a.size();
-    int mex = 0;
+    int m = unique(all(a)) - a.begin();
+    a.resize(m);
+    int cnt = 0;
     int i = 1;
     while (i < m && a[i] == a[i - 1] + 1)
     {
         i++;
-        mex++;
+        cnt++;
     }
     if (i == m)
     {
-        if (mex & 1)
+        if (cnt & 1)
             cout << t1 << endl;
         else
             cout << t2 << endl;
         return;
     }
-    if (mex & 1)
+    if (cnt & 1)
     {
-        if (a[i] - mex > 1)
+        if (a[i] - cnt > 1)
             cout << t2 << endl;
         else
             cout << t1 << endl;
     }
     else
     {
-        if (a[i] - mex > 1)
+        if (a[i] - cnt > 1)
             cout << t1 << endl;
         else
             cout << t2 << endl;

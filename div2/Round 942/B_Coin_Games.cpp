@@ -175,22 +175,22 @@ inline void write(T x)
 void solve()
 {
     int n;
+    cin >> n;
     string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
-    for (int i = 1; i <= n; i++)
+    cin >> s;
+    int cntU;
+    int cntD;
+    for (int i = 0; i < n; i++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
+        if (s[i] == 'U')
+            cntU++;
         else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+            cntD++;
     }
-    cout << mx - mn << endl;
+    if (cntU & 1)
+        YES;
+    else
+        NO;
 }
 
 int main()

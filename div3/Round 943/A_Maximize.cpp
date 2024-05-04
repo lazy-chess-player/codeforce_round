@@ -171,26 +171,26 @@ inline void write(T x)
 }
 
 /*#####################################BEGIN#####################################*/
-
+int gcd(int a, int b)
+{
+    return b ? gcd(b, a % b) : a;
+}
 void solve()
 {
-    int n;
-    string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
-    for (int i = 1; i <= n; i++)
+    int x;
+    cin >> x;
+    int ans = 0;
+    int temp = -1;
+    for (int y = 1; y < x; y++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
-        else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+        int gd = gcd(y, x);
+        if (gd + y > temp)
+        {
+            ans = y;
+            temp = gd + y;
+        }
     }
-    cout << mx - mn << endl;
+    cout << ans << endl;
 }
 
 int main()

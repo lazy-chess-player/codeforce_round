@@ -172,25 +172,50 @@ inline void write(T x)
 
 /*#####################################BEGIN#####################################*/
 
+const int N = 2e5 + 5;
+
+ll n, q;
+
+ll a[N];
+ll XOR[N];
+
+void init()
+{
+    memset(a, 0, sizeof(a));
+    memset(XOR, 0, sizeof(XOR));
+}
+
 void solve()
 {
-    int n;
-    string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
+    cin >> n >> q;
     for (int i = 1; i <= n; i++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
-        else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+        cin >> a[i];
+        XOR[i] = XOR[i - 1] ^ a[i];
     }
-    cout << mx - mn << endl;
+    int l, r;
+    // cout << endl;
+    // for (int i = 1; i <= n; i++)
+    // {
+    //     cout << XOR[i] << " ";
+    // }
+    // cout << endl;
+    while (q--)
+    {
+        cin >> l >> r;
+        // DEBUG6(l)
+        // DEBUG6(r)
+        // DEBUG1((XOR[r] ^ XOR[l - 1]))
+        ll t = (XOR[r] ^ XOR[l - 1]);
+        if (t == 0)
+            YES;
+        else if (r - l > 1 && t == 1)
+            YES;
+        else
+            NO;
+    }
+    cout << endl;
+    init();
 }
 
 int main()

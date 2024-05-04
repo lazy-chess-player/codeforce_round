@@ -172,25 +172,68 @@ inline void write(T x)
 
 /*#####################################BEGIN#####################################*/
 
-void solve()
+const int N = 2e5 + 5;
+
+ull n, k;
+ull sum = 0;
+
+int a[N];
+
+bool check(ull x)
 {
-    int n;
-    string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
+    ull cnt = 0;
     for (int i = 1; i <= n; i++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
-        else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+        if (a[i] < x)
+            cnt += x - a[i];
+        if (cnt > k)
+            return false;
     }
-    cout << mx - mn << endl;
+    return true;
+}
+void solve()
+{
+    cin >> n >> k;
+    sum = 0;
+    memset(a, 0, sizeof(a));
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+        sum += a[i];
+    }
+    ull l = 1;
+    ull r = 2e12;
+    while (l < r)
+    {
+        ull mid = (l + r + 1) >> 1;
+        if (check(mid))
+            l = mid;
+        else
+            r = mid - 1;
+    }
+    ull mn = l;
+    for (int i = 1; i <= n; i++)
+    {
+        if (a[i] < mn)
+        {
+            ull t = mn - a[i];
+            a[i] += t;
+            k -= t;
+        }
+    }
+    ull num = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        if (a[i] == mn && k)
+        {
+            a[i]++;
+            k--;
+        }
+        if (a[i] > mn)
+            num++;
+    }
+    ull ans = n * (mn - 1) + 1 + num;
+    cout << ans << endl;
 }
 
 int main()

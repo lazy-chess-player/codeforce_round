@@ -174,23 +174,21 @@ inline void write(T x)
 
 void solve()
 {
-    int n;
     string s;
-    cin >> n >> s;
-    s = ' ' + s;
-    int mn = 0;
-    int mx = 0;
-    int cur = 0;
-    for (int i = 1; i <= n; i++)
+    cin >> s;
+    int cnt1 = 0;
+    ll ans = 0;
+    for (int i = 0; i <= s.size(); i++)
     {
-        if ((cur & 1) == (s[i] == '1'))
-            cur++;
-        else
-            cur--;
-        mn = min(mn, cur);
-        mx = max(mx, cur);
+        if (s[i] == '1')
+            cnt1++;
+        else if (s[i] == '0')
+        {
+            if (cnt1)
+                ans += cnt1 + 1;
+        }
     }
-    cout << mx - mn << endl;
+    cout << ans << endl;
 }
 
 int main()
