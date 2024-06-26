@@ -91,7 +91,7 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef long double ld;
 
-typedef pair<int, int> pii;
+typedef pair<int, int> pll;
 typedef pair<ll, ll> pll;
 typedef pair<ld, ld> pdd;
 typedef pair<string, string> pss;
@@ -102,7 +102,7 @@ typedef vector<bool> vb;
 typedef vector<int> vi;
 typedef vector<ll> vl;
 typedef vector<string> vs;
-typedef vector<pii> vpii;
+typedef vector<pll> vpll;
 typedef vector<pll> vpll;
 typedef vector<pss> vpss;
 
@@ -111,7 +111,7 @@ typedef vector<vl> vvl;
 
 typedef queue<int> qi;
 typedef queue<ll> ql;
-typedef queue<pii> qpii;
+typedef queue<pll> qpii;
 typedef queue<pll> qpll;
 typedef queue<psi> qpsi;
 typedef queue<psl> qpsl;
@@ -119,7 +119,7 @@ typedef queue<psl> qpsl;
 typedef priority_queue<int> pqi;
 typedef priority_queue<ll> pql;
 typedef priority_queue<string> pqs;
-typedef priority_queue<pii> pqpii;
+typedef priority_queue<pll> pqpii;
 typedef priority_queue<psi> pqpsi;
 typedef priority_queue<pll> pqpl;
 typedef priority_queue<psi> pqpsl;
@@ -174,69 +174,19 @@ inline void write(T x)
 
 /*#####################################BEGIN#####################################*/
 
-void solve(ll t, vector<pair<ll, vector<ll>>> &test_cases)
+void solve()
 {
-    for (ll i = 0; i < t; ++i)
-    {
-        ll n = test_cases[i].first;
-        vector<ll> &k = test_cases[i].second;
-
-        long long total_product = 1;
-        for (ll j = 0; j < n; ++j)
-        {
-            total_product *= k[j];
-        }
-
-        vector<long long> bets(n);
-        for (ll j = 0; j < n; ++j)
-        {
-            bets[j] = total_product / k[j];
-        }
-
-        long long total_bet = accumulate(bets.begin(), bets.end(), 0LL);
-        bool valid = true;
-        for (ll j = 0; j < n; ++j)
-        {
-            if (k[j] * bets[j] <= total_bet)
-            {
-                valid = false;
-                break;
-            }
-        }
-
-        if (valid)
-        {
-            for (ll j = 0; j < n; ++j)
-            {
-                cout << bets[j] << " ";
-            }
-            cout << endl;
-        }
-        else
-        {
-            cout << -1 << endl;
-        }
-    }
 }
 
 int main()
 {
-    ll t;
-    cin >> t;
-    vector<pair<ll, vector<ll>>> test_cases(t);
-    for (ll i = 0; i < t; ++i)
+    ios::sync_with_stdio(false), std::cin.tie(nullptr), std::cout.tie(nullptr);
+    int _ = 1;
+    std::cin >> _;
+    while (_--)
     {
-        ll n;
-        cin >> n;
-        vector<ll> k(n);
-        for (ll j = 0; j < n; ++j)
-        {
-            cin >> k[j];
-        }
-        test_cases[i] = make_pair(n, k);
+        solve();
     }
-
-    solve(t, test_cases);
     return 0;
 }
 
