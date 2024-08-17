@@ -191,72 +191,34 @@ inline void write(T x)
 }
 
 /*#####################################BEGIN#####################################*/
-const int N = 1e7 + 5;
 
-int primes[N], st[N], idx;
-
-void getPrime()
+void solve()
 {
-    for (int i = 2; i < N; i++)
+    string s;
+    cin >> s;
+    mci mp;
+    for (auto i : s)
     {
-        if (!st[i])
-        {
-            idx++;
-            st[i] = i;
-            primes[idx] = i;
-        }
-        for (int j = 1; j <= idx && i * primes[j] < N; j++)
-        {
-            st[i * primes[j]] = primes[j];
-            if (st[i] == primes[j])
-                break;
-        }
+        mp[i]++;
     }
-}
-
-int sg[N], p[N];
-
-void getSG()
-{
-    int idx = 1;
-    sg[1] = 1;
-    p[1] = 1;
-    for (int i = 3; i < N; i += 2)
+    string t1;
+    string t2;
+    string t3;
+    for (auto i : mp)
     {
-        sg[i] = 2;
-        if (st[i] == i)
+        if (i.sd > 1)
         {
-            idx++;
-            sg[i] = idx;
+            t1.pb(i.ft);
+            t2.pb(i.ft);
         }
         else
         {
-            while (p[sg[i]] && i % p[sg[i]] > 0)
-                sg[i]++;
+            t3.pb(i.ft);
         }
-        if (sg[i] > 0 && !p[sg[i]])
-            p[sg[i]] = i;
     }
+    cout << t1 << t3 << t2 << endl;
 }
-void solve()
-{
-    int n;
-    cin >> n;
-    vi a(n);
-    const string t1 = "Alice";
-    const string t2 = "Bob";
-    int flag = 0;
-    for (int i = 0; i < n; i++)
-    {
-        int x;
-        cin >> x;
-        flag ^= sg[x];
-    }
-    if (flag)
-        cout << t2 << endl;
-    else
-        cout << t1 << endl;
-}
+
 int main()
 {
     ios::sync_with_stdio(false), std::cin.tie(0), std::cout.tie(0);
@@ -264,8 +226,6 @@ int main()
     // freopen("test.out", "w", stdout);
     int _ = 1;
     std::cin >> _;
-    getPrime();
-    getSG();
     while (_--)
     {
         solve();

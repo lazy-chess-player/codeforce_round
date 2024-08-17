@@ -191,81 +191,51 @@ inline void write(T x)
 }
 
 /*#####################################BEGIN#####################################*/
-const int N = 1e7 + 5;
 
-int primes[N], st[N], idx;
-
-void getPrime()
-{
-    for (int i = 2; i < N; i++)
-    {
-        if (!st[i])
-        {
-            idx++;
-            st[i] = i;
-            primes[idx] = i;
-        }
-        for (int j = 1; j <= idx && i * primes[j] < N; j++)
-        {
-            st[i * primes[j]] = primes[j];
-            if (st[i] == primes[j])
-                break;
-        }
-    }
-}
-
-int sg[N], p[N];
-
-void getSG()
-{
-    int idx = 1;
-    sg[1] = 1;
-    p[1] = 1;
-    for (int i = 3; i < N; i += 2)
-    {
-        sg[i] = 2;
-        if (st[i] == i)
-        {
-            idx++;
-            sg[i] = idx;
-        }
-        else
-        {
-            while (p[sg[i]] && i % p[sg[i]] > 0)
-                sg[i]++;
-        }
-        if (sg[i] > 0 && !p[sg[i]])
-            p[sg[i]] = i;
-    }
-}
 void solve()
 {
     int n;
     cin >> n;
-    vi a(n);
-    const string t1 = "Alice";
-    const string t2 = "Bob";
-    int flag = 0;
+    vl a(n);
     for (int i = 0; i < n; i++)
     {
-        int x;
-        cin >> x;
-        flag ^= sg[x];
+        cin >> a[i];
     }
-    if (flag)
-        cout << t2 << endl;
-    else
-        cout << t1 << endl;
+    vl pre(n);
+    vl suf(n);
+    for (int i = 0; i < n; i++)
+    {
+        pre[i] = a[i] + i;
+        suf[i] = a[i] + n - i - 1;
+    }
+    for (int i = 1; i < n; i++)
+    {
+        suf[i] = max(suf[i], suf[i - 1]);
+    }
+    for (int i = n - 2; i > -1; i--)
+    {
+        pre[i] = max(pre[i], pre[i + 1]);
+    }
+    ll ans = infll;
+    for (int i = 0; i < n; i++)
+    {
+        ll now = a[i];
+        if (i > 0)
+            now = max(now, suf[i - 1]);
+        if (i < n - 1)
+            now = max(now, pre[i + 1]);
+        ans = min(ans, now);
+    }
+    cout << ans << endl;
 }
+
 int main()
 {
     ios::sync_with_stdio(false), std::cin.tie(0), std::cout.tie(0);
     // freopen("test.in", "r", stdin);
     // freopen("test.out", "w", stdout);
     int _ = 1;
-    std::cin >> _;
-    getPrime();
-    getSG();
+    // std::cin >> _;
     while (_--)
     {
         solve();

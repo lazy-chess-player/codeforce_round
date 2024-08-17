@@ -191,72 +191,68 @@ inline void write(T x)
 }
 
 /*#####################################BEGIN#####################################*/
-const int N = 1e7 + 5;
 
-int primes[N], st[N], idx;
-
-void getPrime()
-{
-    for (int i = 2; i < N; i++)
-    {
-        if (!st[i])
-        {
-            idx++;
-            st[i] = i;
-            primes[idx] = i;
-        }
-        for (int j = 1; j <= idx && i * primes[j] < N; j++)
-        {
-            st[i * primes[j]] = primes[j];
-            if (st[i] == primes[j])
-                break;
-        }
-    }
-}
-
-int sg[N], p[N];
-
-void getSG()
-{
-    int idx = 1;
-    sg[1] = 1;
-    p[1] = 1;
-    for (int i = 3; i < N; i += 2)
-    {
-        sg[i] = 2;
-        if (st[i] == i)
-        {
-            idx++;
-            sg[i] = idx;
-        }
-        else
-        {
-            while (p[sg[i]] && i % p[sg[i]] > 0)
-                sg[i]++;
-        }
-        if (sg[i] > 0 && !p[sg[i]])
-            p[sg[i]] = i;
-    }
-}
 void solve()
 {
     int n;
     cin >> n;
-    vi a(n);
-    const string t1 = "Alice";
-    const string t2 = "Bob";
-    int flag = 0;
-    for (int i = 0; i < n; i++)
+    vvi h(n + 1);
+    vl a(n + 1);
+    for (int i = 1; i <= n; i++)
     {
-        int x;
-        cin >> x;
-        flag ^= sg[x];
+        cin >> a[i];
     }
-    if (flag)
-        cout << t2 << endl;
-    else
-        cout << t1 << endl;
+    vi du(n + 1);
+    for (int i = 1; i < n; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        h[a].pb(b);
+        h[b].pb(a);
+        du[a]++;
+        du[b]++;
+    }
+    ll ans = 0;
+    vl dp(n + 1);
+    auto dfs = [&](auto self, int u, int fa) -> void
+    {
+        vl val;
+        dp[u] = a[u];
+        ans = max(ans, dp[u]);
+        for (int v : h[u])
+        {
+            if (v == fa)
+                continue;
+            self(self, v, u);
+            val.pb(dp[v]);
+            ans = max(ans, a[u] + dp[v]);
+            dp[u] = max(dp[u], dp[v]);
+        }
+        sort(val.begin(), val.end(), greater<ll>());
+        if (val.size() >= 2)
+        {
+            ll sum = val[0] + val[1];
+            ans = max(ans, sum);
+            for (int i = 2; i < val.size() && val[i] > 0; i++)
+            {
+                sum += val[i];
+            }
+            dp[u] = max(dp[u], a[u] + sum);
+        }
+        if (val.size() >= 3)
+        {
+            ll sum = val[0] + val[1] + val[2];
+            for (int i = 3; i < val.size() && val[i] > 0; i++)
+            {
+                sum += val[i];
+            }
+            ans = max(ans, a[u] + sum);
+        }
+    };
+    dfs(dfs, 1, 0);
+    cout << ans << endl;
 }
+
 int main()
 {
     ios::sync_with_stdio(false), std::cin.tie(0), std::cout.tie(0);
@@ -264,8 +260,6 @@ int main()
     // freopen("test.out", "w", stdout);
     int _ = 1;
     std::cin >> _;
-    getPrime();
-    getSG();
     while (_--)
     {
         solve();

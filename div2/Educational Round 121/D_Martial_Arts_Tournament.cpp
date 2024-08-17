@@ -191,81 +191,58 @@ inline void write(T x)
 }
 
 /*#####################################BEGIN#####################################*/
-const int N = 1e7 + 5;
-
-int primes[N], st[N], idx;
-
-void getPrime()
-{
-    for (int i = 2; i < N; i++)
-    {
-        if (!st[i])
-        {
-            idx++;
-            st[i] = i;
-            primes[idx] = i;
-        }
-        for (int j = 1; j <= idx && i * primes[j] < N; j++)
-        {
-            st[i * primes[j]] = primes[j];
-            if (st[i] == primes[j])
-                break;
-        }
-    }
-}
-
-int sg[N], p[N];
-
-void getSG()
-{
-    int idx = 1;
-    sg[1] = 1;
-    p[1] = 1;
-    for (int i = 3; i < N; i += 2)
-    {
-        sg[i] = 2;
-        if (st[i] == i)
-        {
-            idx++;
-            sg[i] = idx;
-        }
-        else
-        {
-            while (p[sg[i]] && i % p[sg[i]] > 0)
-                sg[i]++;
-        }
-        if (sg[i] > 0 && !p[sg[i]])
-            p[sg[i]] = i;
-    }
-}
 void solve()
 {
     int n;
     cin >> n;
     vi a(n);
-    const string t1 = "Alice";
-    const string t2 = "Bob";
-    int flag = 0;
     for (int i = 0; i < n; i++)
     {
-        int x;
-        cin >> x;
-        flag ^= sg[x];
+        cin >> a[i];
     }
-    if (flag)
-        cout << t2 << endl;
-    else
-        cout << t1 << endl;
+    sort(all(a));
+    int k = __lg(n) + 1;
+    vi left(k + 1);
+    vi right(k + 1);
+    for (int i = 0, j = 0; i <= k; i++)
+    {
+        while (j < n && ((1 << i) >= n || a[j] < a[1 << i]))
+        {
+            j++;
+        }
+        left[i] = j;
+    }
+    reverse(a.begin(), a.end());
+    for (int i = 0, j = 0; i <= k; i++)
+    {
+        while (j < n && ((1 << i) >= n || a[j] > a[1 << i]))
+        {
+            j++;
+        }
+        right[i] = j;
+    }
+
+    int ans = inf;
+    for (int i = 0; i <= k; i++)
+    {
+        for (int j = 0; j <= k; j++)
+        {
+            int mid = max(1, n - left[i] - right[j]);
+            int k = __lg(mid);
+            if (mid > 1 << k)
+                k++;
+            ans = min(ans, (1 << i) + (1 << j) + (1 << k) - n);
+        }
+    }
+    cout << ans << endl;
 }
 int main()
 {
-    ios::sync_with_stdio(false), std::cin.tie(0), std::cout.tie(0);
+    ios::sync_with_stdio(false), cin.tie(0), cout.tie(0);
     // freopen("test.in", "r", stdin);
     // freopen("test.out", "w", stdout);
     int _ = 1;
-    std::cin >> _;
-    getPrime();
-    getSG();
+    cin >> _;
     while (_--)
     {
         solve();
