@@ -196,16 +196,26 @@ void solve()
 {
     int n;
     cin >> n;
-    vi a(n);
-    for (int i = 0; i < n; i++)
+    if (n < 7)
     {
-        cin >> a[i];
-    }
-    sort(all(a));
-    if (n == 2 && a.front() + 1 != a.back())
-        YES;
-    else
         NO;
+        return;
+    }
+    int x = 1;
+    int y = 2;
+    int z = n - x - y;
+    if (z % 3 == 0)
+    {
+        z -= 2;
+        y += 2;
+    }
+    if (z <= 0 || z == x || z == y)
+    {
+        NO;
+        return;
+    }
+    YES;
+    cout << x << " " << y << " " << z << endl;
 }
 
 int main()

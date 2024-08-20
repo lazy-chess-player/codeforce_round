@@ -191,21 +191,68 @@ inline void write(T x)
 }
 
 /*#####################################BEGIN#####################################*/
+int qmi(int a, int k, int p) // 快速幂模板
+{
+    int res = 1;
+    while (k)
+    {
+        if (k & 1)
+            res = (ll)res * a % p;
+        a = (ll)a * a % p;
+        k >>= 1;
+    }
+    return res;
+}
 
+const int N = 3e5 + 5;
+
+const ll mod = 998244353;
+
+ll fact[N], infact[N];
+
+// 预处理阶乘的余数和阶乘逆元的余数
+void getFact()
+{
+    fact[0] = infact[0] = 1;
+    for (ll i = 1; i < N; i++)
+    {
+        fact[i] = (ll)fact[i - 1] * i % mod;
+        infact[i] = (ll)infact[i - 1] * qmi(i, mod - 2, mod) % mod;
+    }
+}
+
+ll C(ll a, ll b)
+{
+    if (a < b)
+        return 0;
+    return (ll)fact[a] * infact[b] % mod * infact[a - b] % mod;
+}
 void solve()
 {
-    int n;
-    cin >> n;
-    vi a(n);
-    for (int i = 0; i < n; i++)
+    int n, q;
+    cin >> n >> q;
+    string s;
+    cin >> s;
+    ll ans = 1;
+    for (int i = 1; i < n; i++)
     {
-        cin >> a[i];
+        if (s[i] == '?')
+            ans = (ans * i) % mod;
     }
-    sort(all(a));
-    if (n == 2 && a.front() + 1 != a.back())
-        YES;
-    else
-        NO;
+    cout << (s[0] == '?' ? 0 : ans) << endl;
+    while (q--)
+    {
+        int p;
+        char ch;
+        cin >> p >> ch;
+        p--;
+        if (p && s[p] == '?')
+            ans = (ans * qmi(p, mod - 2, mod)) % mod;
+        s[p] = ch;
+        if (p && ch == '?')
+            ans = (ans * p) % mod;
+        cout << (s[0] == '?' ? 0 : ans) << endl;
+    }
 }
 
 int main()
@@ -214,7 +261,8 @@ int main()
     // freopen("test.in", "r", stdin);
     // freopen("test.out", "w", stdout);
     int _ = 1;
-    std::cin >> _;
+    // std::cin >> _;
+    getFact();
     while (_--)
     {
         solve();

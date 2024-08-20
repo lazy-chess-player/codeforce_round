@@ -194,18 +194,37 @@ inline void write(T x)
 
 void solve()
 {
-    int n;
-    cin >> n;
-    vi a(n);
+    string s;
+    cin >> s;
+    int n = s.size();
+    ll pos;
+    cin >> pos;
+    pos--;
+    int idx;
+    int p;
     for (int i = 0; i < n; i++)
     {
-        cin >> a[i];
+        int len = n - i;
+        if (pos < len)
+        {
+            idx = i;
+            p = pos;
+            break;
+        }
+        pos -= len;
     }
-    sort(all(a));
-    if (n == 2 && a.front() + 1 != a.back())
-        YES;
-    else
-        NO;
+
+    string t;
+    for (auto c : s)
+    {
+        while (idx > 0 && !t.empty() && c < t.back())
+        {
+            t.pop_back();
+            idx--;
+        }
+        t += c;
+    }
+    cout << t[p];
 }
 
 int main()
