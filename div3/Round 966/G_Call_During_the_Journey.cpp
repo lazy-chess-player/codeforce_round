@@ -1,25 +1,29 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include <algorithm>
-#include <set>
-#include <unordered_map>
-#include <cstring>
-#include <cstdio>
-#include <string>
-#include <queue>
-#include <stack>
-#include <map>
-#include <list>
+#include <array>
 #include <bitset>
 #include <cmath>
-#include <numeric>
 #include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <fstream>
+#include <functional>
 #include <iomanip>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <map>
+#include <numeric>
+#include <queue>
 #include <random>
+#include <set>
+#include <stack>
+#include <string>
 #include <tuple>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #define ft first
 #define sd second
@@ -98,6 +102,7 @@ typedef long double ld;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef pair<ld, ld> pdd;
+typedef pair<ll, int> pli;
 typedef pair<string, string> pss;
 typedef pair<string, int> psi;
 typedef pair<string, ll> psl;
@@ -112,6 +117,7 @@ typedef vector<ll> vl;
 typedef vector<string> vs;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
+typedef vector<pli> vpli;
 typedef vector<pss> vpss;
 typedef vector<ti3> vti3;
 typedef vector<tl3> vtl3;
@@ -153,8 +159,6 @@ typedef unordered_map<char, ll> umcl;
 typedef unordered_map<string, int> umsi;
 typedef unordered_map<string, ll> umsl;
 
-#include <cstdio>
-
 template <typename T>
 inline T read()
 {
@@ -194,6 +198,57 @@ inline void write(T x)
 
 void solve()
 {
+    int n, m;
+    cin >> n >> m;
+    ll t0, t1, t2;
+    cin >> t0 >> t1 >> t2;
+    vector<vector<array<int, 3>>> h(n + 1);
+    for (int i = 1; i <= m; i++)
+    {
+        int u, v, w1, w2;
+        cin >> u >> v >> w2 >> w1;
+        h[u].pb({v, w1, w2});
+        h[v].pb({u, w1, w2});
+    }
+    auto check = [&](ll mid) -> bool
+    {
+        vl d(n + 1, infll);
+        d[1] = mid;
+        vb vis(n + 1);
+        priority_queue<pli, vpli, greater<pli>> Q;
+        Q.push({d[1], 1});
+        while (!Q.empty())
+        {
+            auto [dis, u] = Q.top();
+            Q.pop();
+            if (vis[u])
+                continue;
+            vis[u] = true;
+            for (auto t : h[u])
+            {
+                int v = t[0];
+                ll w1 = t[1], w2 = t[2];
+                d[v] = min(d[v], d[u] + w1);
+                if (d[u] + w2 <= t1 || d[u] >= t2)
+                    d[v] = min(d[v], d[u] + w2);
+                else
+                    d[v] = min(d[v], t2 + 1ll * w2);
+                Q.push({d[v], v});
+            }
+        }
+        return d[n] <= t0;
+    };
+
+    int l = -1, r = t0;
+    while (l < r)
+    {
+        int mid = (l + r + 1) / 2;
+        if (check(mid))
+            l = mid;
+        else
+            r = mid - 1;
+    }
+    cout << l << endl;
 }
 
 int main()

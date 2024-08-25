@@ -1,28 +1,25 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
+#include <iostream>
+#include <fstream>
+#include <vector>
 #include <algorithm>
-#include <array>
+#include <set>
+#include <unordered_map>
+#include <cstring>
+#include <cstdio>
+#include <string>
+#include <queue>
+#include <stack>
+#include <map>
+#include <list>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <iterator>
-#include <list>
-#include <map>
 #include <numeric>
-#include <queue>
+#include <cstdlib>
+#include <iomanip>
 #include <random>
-#include <set>
-#include <stack>
-#include <string>
 #include <tuple>
-#include <unordered_map>
-#include <utility>
-#include <vector>
 
 #define ft first
 #define sd second
@@ -101,7 +98,6 @@ typedef long double ld;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef pair<ld, ld> pdd;
-typedef pair<ll, int> pli;
 typedef pair<string, string> pss;
 typedef pair<string, int> psi;
 typedef pair<string, ll> psl;
@@ -116,7 +112,6 @@ typedef vector<ll> vl;
 typedef vector<string> vs;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
-typedef vector<pli> vpli;
 typedef vector<pss> vpss;
 typedef vector<ti3> vti3;
 typedef vector<tl3> vtl3;
@@ -158,6 +153,8 @@ typedef unordered_map<char, ll> umcl;
 typedef unordered_map<string, int> umsi;
 typedef unordered_map<string, ll> umsl;
 
+#include <cstdio>
+
 template <typename T>
 inline T read()
 {
@@ -197,6 +194,37 @@ inline void write(T x)
 
 void solve()
 {
+    string s;
+    cin >> s;
+    int n = s.size();
+    int m;
+    cin >> m;
+    string l, r;
+    cin >> l >> r;
+    int p = 0;
+    int len = 0;
+    vi vis(10);
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] >= l[p] && s[i] <= r[p] && !vis[s[i] - '0'])
+        {
+            len++;
+            if (len == r[p] - l[p] + 1)
+            {
+                len = 0;
+                p++;
+                vis.assign(10, 0);
+                if (p == m)
+                    break;
+                continue;
+            }
+            vis[s[i] - '0'] = 1;
+        }
+    }
+    if (p == m)
+        NO;
+    else
+        YES;
 }
 
 int main()

@@ -1,28 +1,25 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
+#include <iostream>
+#include <fstream>
+#include <vector>
 #include <algorithm>
-#include <array>
+#include <set>
+#include <unordered_map>
+#include <cstring>
+#include <cstdio>
+#include <string>
+#include <queue>
+#include <stack>
+#include <map>
+#include <list>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <iterator>
-#include <list>
-#include <map>
 #include <numeric>
-#include <queue>
+#include <cstdlib>
+#include <iomanip>
 #include <random>
-#include <set>
-#include <stack>
-#include <string>
 #include <tuple>
-#include <unordered_map>
-#include <utility>
-#include <vector>
 
 #define ft first
 #define sd second
@@ -101,7 +98,6 @@ typedef long double ld;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef pair<ld, ld> pdd;
-typedef pair<ll, int> pli;
 typedef pair<string, string> pss;
 typedef pair<string, int> psi;
 typedef pair<string, ll> psl;
@@ -116,7 +112,6 @@ typedef vector<ll> vl;
 typedef vector<string> vs;
 typedef vector<pii> vpii;
 typedef vector<pll> vpll;
-typedef vector<pli> vpli;
 typedef vector<pss> vpss;
 typedef vector<ti3> vti3;
 typedef vector<tl3> vtl3;
@@ -158,6 +153,8 @@ typedef unordered_map<char, ll> umcl;
 typedef unordered_map<string, int> umsi;
 typedef unordered_map<string, ll> umsl;
 
+#include <cstdio>
+
 template <typename T>
 inline T read()
 {
@@ -197,6 +194,28 @@ inline void write(T x)
 
 void solve()
 {
+    int x1, y1, x2, y2, x3, y3;
+    cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
+    x2 -= x1;
+    x3 -= x1;
+    y2 -= y1;
+    y3 -= y1;
+    if (x2 < 0)
+    {
+        x2 *= -1;
+        x3 *= -1;
+    }
+    if (y2 < 0)
+    {
+        y2 *= -1;
+        y3 *= -1;
+    }
+    int ans = 1;
+    if (x3 > 0)
+        ans += min(x2, x3);
+    if (y3 > 0)
+        ans += min(y2, y3);
+    cout << ans << '\n';
 }
 
 int main()
