@@ -99,6 +99,8 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef long double ld;
 
+typedef __int128_t i128;
+
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef pair<ld, ld> pdd;
@@ -198,6 +200,47 @@ inline void write(T x)
 
 void solve()
 {
+    ll n, k;
+    cin >> n >> k;
+    vl a(n);
+    ll gd = 0;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+        gd = __gcd(gd, a[i]);
+    }
+    if (n == 1)
+    {
+        if (a[0] >= k)
+            cout << k - 1 << endl;
+        else
+            cout << k << endl;
+        return;
+    }
+    vl g(n);
+    for (int i = 0; i < n; i++)
+    {
+        g[i] = i * gd;
+    }
+    ll l = 0;
+    ll r = inf;
+    while (l < r)
+    {
+        ll mid = (l + r + 1) >> 1;
+        ll cnt = 0;
+        for (auto i : g)
+        {
+            if (i < mid)
+                cnt++;
+            else
+                break;
+        }
+        if (mid >= cnt + k)
+            r = mid - 1;
+        else
+            l = mid;
+    }
+    cout << l << endl;
 }
 
 int main()
