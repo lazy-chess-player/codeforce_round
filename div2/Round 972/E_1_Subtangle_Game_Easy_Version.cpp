@@ -202,38 +202,72 @@ inline void write(T x)
 
 const int N = 305;
 
-int suf[N][N][N];
-
+#define x first
+#define y second
 void solve()
 {
     int l, n, m;
     cin >> l >> n >> m;
-    vi a(l + 1);
+    vi a(l + 2);
+    map<int, pii> row;
+    map<int, pii> col;
     for (int i = 1; i <= l; i++)
     {
         cin >> a[i];
     }
     vvi b(n + 1, vi(m + 1));
+    map<int, vpii> mp;
     for (int i = 1; i <= n; i++)
     {
         for (int j = 1; j <= m; j++)
         {
-            cin >> b[i][j];
+            int x;
+            cin >> x;
+            b[i][j] = x;
+            while (mp[x].size() && mp[x].back().y < j)
+                mp[x].pop_back();
+            mp[x].pb({i, j});
         }
     }
-    for (int k = 1; k <= l; k++)
+    vector<vvi> dp(n + 1, vvi(m + 1, vi(l + 1, -1)));
+    function<bool(int, int, int)> dfs = [&](int x, int y, int k) -> bool
     {
-        int t = a[k];
-        for (int i = n; i >= 1; i--)
+        if (x == n && y == m)
         {
-            for (int j = m; j >= 1; j--)
+            dp[x][y][k] = 1;
+            return true;
+        }
+        if (dp[x][y][k] != -1)
+            return dp[x][y][k];
+        bool flag = true;
+        for (auto &p : mp[a[k + 1]])
+        {
+            if (p.x > x && p.y > y && dfs(p.x, p.y, k + 1))
             {
-                suf[k][i][j] = suf[k][i - 1][j] + suf[k][i][j - 1] - suf[k][i - 1][j - 1] + int(b[i][j] == t);
+                flag = false;
+                break;
             }
         }
+        if (flag)
+        {
+            dp[x][y][k] = 1;
+            return true;
+        }
+        else
+        {
+            dp[x][y][k] = 0;
+            return false;
+        }
+    };
+    for (auto &p : mp[a[1]])
+    {
+        if (dfs(p.x, p.y, 1))
+        {
+            cout << "T\n";
+            return;
+        }
     }
-    int r = 1, l = 1;
-    cout << "N";
+    cout << "N\n";
 }
 
 int main()
