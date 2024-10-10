@@ -258,14 +258,13 @@ void solve()
     else
         cout << t2 << "\n"; // 否则，输出"TIDAK"
 
-    // 处理每一次更新操作
-    for (int i = 0; i < q; ++i)
+    while (q--)
     {
         int s, t;
         cin >> s >> t;
 
-        int las = b[s]; // 记录更新前第s张幻灯片展示的成员
-        int nex = t;    // 更新后要展示的成员
+        int las = b[s]; // 记录更新前第s张幻灯片展示的成员las
+        int nex = t;    // 更新后要展示的成员nex
 
         if (las == nex)
         {
