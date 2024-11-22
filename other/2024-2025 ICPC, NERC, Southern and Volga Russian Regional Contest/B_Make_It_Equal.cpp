@@ -91,117 +91,59 @@ inline void write(T x)
 }
 
 /*#####################################BEGIN#####################################*/
-
-const int N = 1e6 + 5; // 假设最大范围为 1000000
-int primes[N];         // 存储所有素数
-int minp[N];           // minp[x] 存储 x 的最小质因子
-int cnt;               // 记录素数数量
-
-const int mod = 998244353;
-// 欧拉筛函数
-void sieve(int n)
-{
-    cnt = 0; // 初始化素数计数器
-    for (int i = 2; i <= n; i++)
-    {
-        if (minp[i] == 0)
-        {                      // 如果 minp[i] 为 0，说明 i 是素数
-            minp[i] = i;       // 记录 i 的最小质因子为自身
-            primes[cnt++] = i; // 存储素数
-        }
-        // 利用已找到的素数进行筛选
-        for (int j = 0; j < cnt && primes[j] <= n / i; j++)
-        {
-            minp[primes[j] * i] = primes[j]; // 筛掉 i * primes[j]，并记录最小质因子
-            if (i % primes[j] == 0)
-                break; // 防止重复筛选
-        }
-    }
-}
-
-vi getP(int x)
-{
-    vi P;
-    while (x > 1)
-    {
-        int p = minp[x];
-        P.eb(p);
-        while (x % p == 0)
-            x /= p;
-    }
-    return P;
-}
 void solve()
 {
     int n;
     cin >> n;
     vi a(n);
+    ll sum = 0;
     for (int i = 0; i < n; i++)
     {
         cin >> a[i];
+        sum += a[i];
     }
-    int maxA = *max_element(all(a));
-    sieve(maxA);
-    vl f(n + 1);
-    f[1] = 1;
-    vl g(maxA + 1);
-    vi pri = getP(a[0]);
-    int m = pri.size();
-    for (int mask = 0; mask < (1 << m); mask++)
+    auto check = [&](int x) -> bool
     {
-        ll d = 1;
-        for (int b = 0; b < m; b++)
+        vi temp = a;
+        while (1)
         {
-            if (mask & (1 << b))
-                d *= pri[b];
-        }
-        if (d > maxA)
-            continue;
-        g[d] = (g[d] + f[1]) % mod;
-    }
-    ll tot = f[1];
-    for (int i = 2; i <= n; i++)
-    {
-        vi P = getP(a[i - 1]);
-        int num = P.size();
-        ll sum = 0;
-        for (int mask = 0; mask < (1 << num); mask++)
-        {
-            ll Vs = 1;
             bool flag = true;
-            for (int b = 0; b < num; b++)
+            for (int i = 0; i < n; i++)
             {
-                if (mask & (1 << b))
+                if (temp[i] <= x)
+                    continue;
+                flag = false;
+                if ((temp[i] - x) & 1)
                 {
-                    Vs *= P[b];
-                    if (Vs > maxA)
-                    {
-                        flag = false;
-                        break;
-                    }
+                    temp[(i - 1 + n) % n] -= 2;
+                    temp[i]++;
                 }
+                temp[(i + 1) % n] += (temp[i] - x) / 2;
+                temp[i] = x;
             }
-            if (!flag)
-                continue;
-            int mu = (__builtin_popcount(mask) % 2 == 0) ? -1 : 1;
-            sum = (sum + mu * g[Vs] + mod) % mod;
+            if (flag)
+                break;
         }
-        f[i] = (tot + sum + mod) % mod;
-        for (int mask = 0; mask < (1 << num); mask++)
+        for (int i = 0; i < n; i++)
         {
-            ll Vs = 1;
-            for (int b = 0; b < num; b++)
-            {
-                if (mask & (1 << b))
-                    Vs *= P[b];
-            }
-            if (Vs > maxA)
-                continue;
-            g[Vs] = (g[Vs] + f[i]) % mod;
+            if (temp[i] != x)
+                return false;
         }
-        tot = (tot + f[i]) % mod;
+        return true;
+    };
+    int l = 0, r = (sum + n - 1) / n;
+    while (l < r)
+    {
+        int mid = (l + r + 1) >> 1;
+        if (check(mid))
+            l = mid;
+        else
+            r = mid - 1;
     }
-    cout << f[n] << "\n";
+    if (check(r))
+        cout << sum - 1ll * r * n << "\n";
+    else
+        cout << "-1\n";
 }
 
 int main()
@@ -210,7 +152,7 @@ int main()
     // freopen("test.in", "r", stdin);
     // freopen("test.out", "w", stdout);
     int _ = 1;
-    // std::cin >> _;
+    std::cin >> _;
     while (_--)
     {
         solve();
